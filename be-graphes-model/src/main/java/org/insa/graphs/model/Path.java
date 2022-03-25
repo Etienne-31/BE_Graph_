@@ -201,8 +201,27 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+        boolean isValid = false;
+        if((this.isEmpty() == true) | (this.arcs.size() == 0)){
+            isValid = true;
+        }
+
+        else{
+            if(this.origin == this.arcs.get(0).getOrigin()){
+                for(int i = 0 ;i< this.arcs.size();i++){
+                    if(this.arcs.get(i).getDestination() == this.arcs.get(i+1).getOrigin()){
+                        isValid = true;
+                    }
+                    else{
+                        isValid = false;
+                        break;
+                    }
+
+                }
+            }
+        }
+        
+        return isValid;
     }
 
     /**
@@ -213,8 +232,12 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+        float pathLength = 0;
+        for(int i = 0;i<= this.arcs.size();i++){
+            pathLength += this.arcs.get(i).getLength();
+            
+        }
+        return pathLength;
     }
 
     /**
@@ -228,14 +251,13 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+        double time = 0;
+        for(int i = 0;i<= this.arcs.size();i++){
+            time += this.arcs.get(i).getTravelTime(speed);  
+        }
+        return time;
     }
-
-    /**
-     * Compute the time to travel this path if moving at the maximum allowed speed
-     * on every arc.
-     * 
+  
      * @return Minimum travel time to travel this path (in seconds).
      * 
      * @deprecated Need to be implemented.

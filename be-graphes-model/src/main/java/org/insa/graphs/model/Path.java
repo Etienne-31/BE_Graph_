@@ -32,11 +32,39 @@ public class Path {
      * 
      * @deprecated Need to be implemented.
      */
-    public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
-            throws IllegalArgumentException {
+    public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes) throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+        List<Arc> fastestArcs = new ArrayList<Arc>();
+        Path fastestPath;
+        if(nodes.size() == 0){
+            fastestPath = new Path(graph);
+        }
+        else if(nodes.size() == 1){
+            fastestPath = new Path(graph, nodes.get(0));  
+        }
+        else{
+            Arc fastestArc;
+            for(int i = 0;i<(nodes.size()-1);i++){
+                fastestArc = null; 
+                arcs = nodes.get(i).getSuccessors();
+             
+                for(Arc arcIterator : arcs){ // Comment factoriser les if sans y dupliquer les conditions 
+                    if(((fastestArc == null)||(arcIterator.getMinimumTravelTime() <= fastestArc.getMinimumTravelTime())) && (arcIterator.getDestination() == nodes.get(i+1))){
+                        fastestArc = arcIterator;
+                    }
+                }
+                if(fastestArc == null){
+                    throw new IllegalArgumentException("Le un noeud n'a pas d'arc pour accéder au succeseur \n");
+                }
+                else{
+                    fastestArcs.add(fastestArc);
+                }  
+            }
+            fastestPath = new Path(graph,fastestArcs);
+
+        }
+        
+        return fastestPath;
     }
 
     /**
@@ -53,11 +81,41 @@ public class Path {
      * 
      * @deprecated Need to be implemented.
      */
-    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
-            throws IllegalArgumentException {
+    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes) throws IllegalArgumentException { // gerer exception au cas ou chemin vérolé 
+
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+        List<Arc> shortestArcs = new ArrayList<Arc>();
+        Path shortestPath;
+        if(nodes.size() == 0){
+            shortestPath = new Path(graph);
+        }
+        else if(nodes.size() == 1){
+            shortestPath = new Path(graph, nodes.get(0));
+        }
+        else{
+            
+        
+            Arc shortestArc;
+            for(int i = 0;i<(nodes.size()-1);i++){
+                shortestArc = null; 
+                arcs = nodes.get(i).getSuccessors();
+             
+                for(Arc arcIterator : arcs){ // Comment factoriser les if sans y dupliquer les conditions 
+                    if(((shortestArc == null)||(arcIterator.getLength() <= shortestArc.getLength())) && (arcIterator.getDestination() == nodes.get(i+1))){
+                        shortestArc = arcIterator;
+                    }
+                }
+                if(shortestArc == null){
+                    throw new IllegalArgumentException("Le un noeud n'a pas d'arc pour accéder au succeseur \n");
+                }
+                else{
+                    shortestArcs.add(shortestArc);
+                }  
+            }
+            shortestPath = new Path(graph,shortestArcs);
+        
+        }   
+        return shortestPath;
     }
 
     /**
@@ -208,7 +266,7 @@ public class Path {
 
         else{
             if(this.origin == this.arcs.get(0).getOrigin()){
-                for(int i = 0 ;i< this.arcs.size();i++){
+                for(int i = 0 ;i< this.arcs.size() - 1;i++){
                     if(this.arcs.get(i).getDestination() == this.arcs.get(i+1).getOrigin()){
                         isValid = true;
                     }
@@ -233,8 +291,8 @@ public class Path {
      */
     public float getLength() {
         float pathLength = 0;
-        for(int i = 0;i<= this.arcs.size();i++){
-            pathLength += this.arcs.get(i).getLength();
+        for(int i = 0;i< this.arcs.size();i++){
+            pathLength = pathLength + this.arcs.get(i).getLength();
             
         }
         return pathLength;
@@ -252,19 +310,22 @@ public class Path {
      */
     public double getTravelTime(double speed) {
         double time = 0;
-        for(int i = 0;i<= this.arcs.size();i++){
+        for(int i = 0;i< this.arcs.size();i++){
             time += this.arcs.get(i).getTravelTime(speed);  
         }
         return time;
     }
   
-     * @return Minimum travel time to travel this path (in seconds).
+    /* * @return Minimum travel time to travel this path (in seconds);
      * 
      * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+        double time = 0;
+        for(int i = 0;i< this.arcs.size();i++){
+            time += this.arcs.get(i).getMinimumTravelTime();  
+        }
+        return time;
     }
 
 }

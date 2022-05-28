@@ -1,7 +1,7 @@
 package org.insa.graphs.algorithm.shortestpath;
 
 import org.insa.graphs.model.Node;
-import org.insa.graphs.model.Arc;;
+import org.insa.graphs.model.Arc;
 
 public class Label implements Comparable<Label> {
     private Node sommetCourant;
@@ -18,6 +18,7 @@ public class Label implements Comparable<Label> {
 
     //Getteur pour Label
     public Double getCost(){ return this.cost;}
+    public Double getTotalCost(){ return this.cost;}
     public Node getSommetCourant(){return this.sommetCourant;}
     public boolean getMarqueStatus(){return this.marque;}
     public Arc getFather(){return this.father;}
@@ -34,12 +35,12 @@ public class Label implements Comparable<Label> {
     }
     public void setFather(Arc newFather){this.father = newFather;}
 
-    public int compareTo(Label label){  // Retourne -1 si objet plus petit 0 sinon  | A revoir 
+    public int compareTo(Label label){  
         int retour = 1;
-        if(this.getCost() <= label.getCost()){
+        if(this.getTotalCost() < label.getTotalCost()){
             retour = -1;
         }
-        else if(this.getCost() == label.getCost()){
+        else if(this.getTotalCost() == label.getTotalCost()){
             retour = 0;
         }
         

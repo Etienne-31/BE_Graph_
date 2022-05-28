@@ -256,12 +256,11 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
         boolean isValid = false;
         if((this.isEmpty() == true) | (this.arcs.size() == 0)){
-            isValid = true;
+            isValid = false;
         }
 
         else{
